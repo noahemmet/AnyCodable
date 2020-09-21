@@ -67,6 +67,17 @@ class AnyEncodableTests: XCTestCase {
         XCTAssert(encodedJSONObject["double"] is Double)
     }
     
+    func testNestedAnyEncodable() throws {
+        struct Wrapper: Encodable {
+            let nested: [String: AnyEncodable]
+        }
+        
+        let wrapper = Wrapper(nested: ["key": "value"])
+        
+        let encoder = JSONEncoder()
+        let _ = try encoder.encode(Wrapper(nested: ["key": AnyEncodable(wrapper)]))
+    }
+    
     #if swift(>=5.0)
     func testStringInterpolationEncoding() throws {
         let dictionary: [String: AnyEncodable] = [

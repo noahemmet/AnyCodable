@@ -114,6 +114,8 @@ extension _AnyEncodable {
 #endif
         case let array as [Any?]:
             try container.encode(array.map { AnyEncodable($0) })
+        case let encodable as Encodable:
+            try encodable.encode(to: encoder)
         case let dictionary as [String: Any?]:
             try container.encode(dictionary.mapValues { AnyEncodable($0) })
         default:
